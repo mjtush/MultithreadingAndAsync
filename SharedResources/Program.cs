@@ -3,6 +3,8 @@
     internal class Program
     {
         private static bool isCompleted;
+        // In order to assure that message is printed only once, the lock is introduced
+        private static readonly object lockCompleted = new object();
 
         // The message should be printed only once
         static void Main(string[] args)
@@ -17,12 +19,17 @@
 
         private static void HelloWorld()
         {
-            if (!isCompleted)
+            /*That means every other thread that comes to lock line after first thread, 
+             *  will have to wait until that particular 
+             * thread is able to use this and finish*/
+            lock (lockCompleted)
             {
-                Console.WriteLine("Hello World should print only once");
-                isCompleted = true;
+                if (!isCompleted)
+                {
+                    isCompleted = true;
+                    Console.WriteLine("Hello World should print only once");
+                }
             }
-            
         }
     }
 }
