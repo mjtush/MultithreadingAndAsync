@@ -15,6 +15,9 @@ namespace ThreadPoolDemo
             employee.Name = "Mike Bike";
             employee.CompanyName = "Bike Road";
 
+            ThreadPool.QueueUserWorkItem(
+                new WaitCallback(DisplayEmployeeInfo), employee);
+
             // Checkin processor count which by defoult is min num of threads.
             // Number of threads in thread poll cannot be less than that.
             var processorCount = Environment.ProcessorCount;
